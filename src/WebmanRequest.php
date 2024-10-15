@@ -39,12 +39,11 @@ abstract class WebmanRequest extends FormModel
      */
     public function __construct()
     {
-        $request = \request();
+        $this->request = \request();
         if ($this->autoLoad) {
-            $data = $request->all();
+            $data = $this->request->all();
             $this->load($data);
             $this->autoValidate && $this->validate($this->throwable);
-            $this->request = $request;
         }
     }
 
