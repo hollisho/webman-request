@@ -2,9 +2,12 @@
 
 namespace hollisho\webman\request;
 
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use support\exception\BusinessException;
 use support\Request;
-use Webman\Exception\NotFoundException;
+use think\Validate;
+use Webman\App;
 
 abstract class WebmanRequest extends FormModel
 {
@@ -30,9 +33,9 @@ abstract class WebmanRequest extends FormModel
 
     /**
      * BaseRequestBo constructor.
-     * @param Request $request
-     * @throws NotFoundException
      * @throws BusinessException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function __construct()
     {
@@ -52,10 +55,15 @@ abstract class WebmanRequest extends FormModel
 
     abstract public function makeValidate();
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws BusinessException
+     */
     public function validate(bool $throwable = false): bool
     {
-        $validate = $this->makeValidate();
-
+        /** @var Validate $validate */
+        $validate = App::container()->get($this->makeValidate());
         if (!$validate->check($this->getAttributes())) {
             if ($throwable) {
                 throw new BusinessException($validate->getError());

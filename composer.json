@@ -20,6 +20,7 @@
   "require": {
     "php": ">=7.2",
     "workerman/webman-framework": "^1.5.0",
+    "topthink/think-validate": "^2.0",
     "hollisho/object-builder": "^1.0"
   },
   "autoload": {
