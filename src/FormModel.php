@@ -3,8 +3,6 @@
 namespace hollisho\webman\request;
 
 use hollisho\objectbuilder\HObject;
-use support\exception\BusinessException;
-use Webman\Exception\NotFoundException;
 
 abstract class FormModel extends HObject
 {
@@ -15,12 +13,12 @@ abstract class FormModel extends HObject
     private $errors;
 
 
-    protected function rules()
+    protected function rules(): array
     {
         return [];
     }
 
-    protected function messages()
+    protected function messages(): array
     {
         return [];
     }
@@ -41,46 +39,25 @@ abstract class FormModel extends HObject
     }
 
     /**
-     * @return mixed
-     */
-    abstract public function makeValidate();
-
-
-    /**
      * @param bool $throwable
      * @return bool
-     * @throws BusinessException
-     * @throws NotFoundException
      */
-    public function validate($throwable = false)
-    {
-        $validate = $this->makeValidate();
-
-        if (!$validate->check($this->getAttributes())) {
-            if ($throwable) {
-                throw new BusinessException($validate->getError());
-            }
-
-            $this->setErrors(is_array($validate->getError()) ? $validate->getError() : [$validate->getError()]);
-        }
-
-        return !$this->hasError();
-    }
+    abstract public function validate(bool $throwable = false): bool;
 
 
     /**
-     * @param null|string $attribute
+     * @param string|null $attribute
      * @return bool
      */
-    public function hasError($attribute = null)
+    public function hasError(string $attribute = null): bool
     {
         return $attribute === null ? !empty($this->getErrors()) : isset($this->errors[$attribute]);
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors === null ? [] : $this->errors;
     }

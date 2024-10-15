@@ -6,7 +6,7 @@ use support\exception\BusinessException;
 use support\Request;
 use Webman\Exception\NotFoundException;
 
-class WebmanRequest extends FormModel
+abstract class WebmanRequest extends FormModel
 {
     private $request;
 
@@ -34,8 +34,9 @@ class WebmanRequest extends FormModel
      * @throws NotFoundException
      * @throws BusinessException
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
+        $request = \request();
         if ($this->autoLoad) {
             $data = $request->all();
             $this->load($data);
@@ -49,8 +50,20 @@ class WebmanRequest extends FormModel
         return $this->request;
     }
 
-    public function makeValidate()
+    abstract public function makeValidate();
+
+    public function validate(bool $throwable = false): bool
     {
-        // TODO: Implement makeValidate() method.
+        $validate = $this->makeValidate();
+
+        if (!$validate->check($this->getAttributes())) {
+            if ($throwable) {
+                throw new BusinessException($validate->getError());
+            }
+
+            $this->setErrors(is_array($validate->getError()) ? $validate->getError() : [$validate->getError()]);
+        }
+
+        return !$this->hasError();
     }
 }
