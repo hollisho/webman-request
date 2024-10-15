@@ -1,0 +1,30 @@
+{
+  "name": "hollisho/webman-request",
+  "type": "library",
+  "description": "http Request For Webman",
+  "keywords": [
+    "workerman",
+    "webman",
+    "request"
+  ],
+  "homepage": "https://github.com/hollisho/webman-request",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Hollis Ho",
+      "email": "he_wenzhi@126.com",
+      "homepage": "https://www.1024plus.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "workerman/webman-framework": "^1.5.0",
+    "hollisho/object-builder": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "hollisho\\webman\\request\\": "src"
+    }
+  }
+}
