@@ -18,9 +18,14 @@ class FormModel extends HObject
     private $errors;
 
 
-    protected $rule = [];
+    protected function rules() {
+        return [];
+    }
 
-    protected $message = [];
+    protected function messages() {
+        return [];
+    }
+
 
     /**
      * @param $data
@@ -44,8 +49,8 @@ class FormModel extends HObject
     {
         /** @var Validate $validate */
         $validate = App::container()->get(Validate::class);
-        $validate->message($this->message);
-        if (!$validate->check($this->getAttributes(), $this->rule)) {
+        $validate->message($this->messages());
+        if (!$validate->check($this->getAttributes(), $this->rules())) {
             if ($throwable) {
                 throw new BusinessException($validate->getError());
             }
