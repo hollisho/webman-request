@@ -24,13 +24,15 @@ class FormModel extends HObject
 
     /**
      * @param $data
-     * @return void
+     * @return bool
      */
     public function load($data)
     {
         if (!empty($data) && is_array($data)) {
             $this->setAttributes($data);
+            return true;
         }
+        return false;
     }
 
     /**
