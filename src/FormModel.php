@@ -3,8 +3,13 @@
 namespace hollisho\webman\request;
 
 use hollisho\objectbuilder\HObject;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use support\exception\BusinessException;
+use think\Validate;
+use Webman\App;
 
-abstract class FormModel extends HObject
+class FormModel extends HObject
 {
 
     /**
@@ -39,10 +44,24 @@ abstract class FormModel extends HObject
     }
 
     /**
-     * @param bool $throwable
-     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws BusinessException
      */
-    abstract public function validate(bool $throwable = false): bool;
+    public function validate(bool $throwable = false): bool
+    {
+        /** @var Validate $validate */
+        $validate = App::container()->get(Validate::class);
+        if (!$validate->check($this->getAttributes())) {
+            if ($throwable) {
+                throw new BusinessException($validate->getError());
+            }
+
+            $this->setErrors(is_array($validate->getError()) ? $validate->getError() : [$validate->getError()]);
+        }
+
+        return !$this->hasError();
+    }
 
 
     /**
