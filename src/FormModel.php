@@ -18,15 +18,9 @@ class FormModel extends HObject
     private $errors;
 
 
-    protected function rules(): array
-    {
-        return [];
-    }
+    protected $rule = [];
 
-    protected function messages(): array
-    {
-        return [];
-    }
+    protected $message = [];
 
     /**
      * @param $data
@@ -36,10 +30,8 @@ class FormModel extends HObject
     {
         if (!empty($data) && is_array($data)) {
             $this->setAttributes($data);
-
             return true;
         }
-
         return false;
     }
 
@@ -52,7 +44,8 @@ class FormModel extends HObject
     {
         /** @var Validate $validate */
         $validate = App::container()->get(Validate::class);
-        if (!$validate->check($this->getAttributes())) {
+        $validate->message($this->message);
+        if (!$validate->check($this->getAttributes(), $this->rule)) {
             if ($throwable) {
                 throw new BusinessException($validate->getError());
             }
