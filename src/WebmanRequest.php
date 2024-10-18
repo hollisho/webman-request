@@ -38,7 +38,7 @@ class WebmanRequest extends FormModel
     {
         $this->request = \request();
         if ($this->autoLoad) {
-            $data = $this->request->all();
+            $data = array_merge($this->request->all(), $this->request->properties);
             $this->load($data);
             $this->autoValidate && $this->validate($this->throwable);
         }
