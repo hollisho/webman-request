@@ -5,7 +5,7 @@ composer require hollisho/webman-request
 ```
 
 ## basic use
-> 内置了think validate验证器，通过依赖注入方式，自动生成请求对象，比对对象的字段做校验
+> 内置了think validate验证器，通过依赖注入方式，自动生成请求对象，并对对象的字段做校验
 
 ```php
 //定义Request对象
