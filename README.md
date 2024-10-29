@@ -20,8 +20,8 @@ class MyRequest extend WebmanRequest
     public function rules()
     {
         return [
-            'id' => 'require|integer',
-            'status' => 'require|integer',
+            'id' => 'require|number',
+            'status' => 'require|number',
         ];
     }
 
@@ -29,7 +29,7 @@ class MyRequest extend WebmanRequest
     {
         return [
             'id.required' => 'id不能为空',
-            'id.integer' => 'id必须为整型',
+            'id.number' => 'id必须为数字',
             'status.required' => 'id不能为空',
         ];
     }
